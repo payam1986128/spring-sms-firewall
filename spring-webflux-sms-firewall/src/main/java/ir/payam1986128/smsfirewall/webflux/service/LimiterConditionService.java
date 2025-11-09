@@ -40,7 +40,6 @@ public class LimiterConditionService {
     private final AtomicReference<List<LimiterCondition>> activeLimiterConditions = new AtomicReference<>();
 
     private final LimiterConditionRepository repository;
-    private final LimiterConditionRepository limiterConditionRepository;
     private final SuspiciousCategoryRepository categoryRepository;
     private final SmsRepository smsRepository;
     private final CommonMapper commonMapper;
@@ -53,7 +52,7 @@ public class LimiterConditionService {
         if (cached != null) {
             return Flux.fromIterable(cached);
         }
-        return limiterConditionRepository.findAllByActiveIsTrueOrderByPriority()
+        return repository.findAllByActiveIsTrueOrderByPriority()
                 .collectList()
                 .doOnNext(activeLimiterConditions::set)
                 .flatMapMany(Flux::fromIterable);
