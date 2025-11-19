@@ -110,7 +110,7 @@ public class LimiterConditionService {
 
     public Mono<Void> editContainingLimiterConditions(UUID categoryId) {
         Query query = Query.query(
-                QueryCriteria.where(x("filters.message.categoryFilters")).arrayContaining(categoryId)
+                QueryCriteria.where(x("filters.keyword.categories")).arrayContaining(categoryId)
         );
         ReactiveFindByQueryOperation.TerminatingFindByQuery<LimiterCondition> findByQuery =
                 repository.getOperations().findByQuery(LimiterCondition.class).matching(query);
@@ -142,7 +142,7 @@ public class LimiterConditionService {
 
     public Mono<Void> deleteFromContainingLimiterConditions(UUID categoryId) {
         Query query = Query.query(
-                QueryCriteria.where(x("filters.message.categoryFilters")).arrayContaining(categoryId)
+                QueryCriteria.where(x("filters.keyword.categories")).arrayContaining(categoryId)
         );
         ReactiveFindByQueryOperation.TerminatingFindByQuery<LimiterCondition> findByQuery =
                 repository.getOperations().findByQuery(LimiterCondition.class).matching(query);
