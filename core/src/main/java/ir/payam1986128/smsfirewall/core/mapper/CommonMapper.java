@@ -1,4 +1,4 @@
-package ir.payam1986128.smsfirewall.webflux.mapper;
+package ir.payam1986128.smsfirewall.core.mapper;
 
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Sort;

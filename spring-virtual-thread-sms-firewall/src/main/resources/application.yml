@@ -1,0 +1,34 @@
+spring:
+  couchbase:
+    connection-string: couchbase://localhost
+    username: Administrator
+    password: password
+  data:
+    couchbase:
+      bucket-name: sms_app
+      scope-name: _default
+      auto-index: true
+  cache:
+    type: caffeine
+    cache-names: activeLimiterConditions
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=60m
+
+logging:
+  level:
+    org.springframework.data.couchbase.repository.query: ERROR
+
+jwt:
+  secretKey: 3016c6eb-da39-47b2-8aa4-863e6d48c203
+  validityInMs: 3600000
+
+app:
+  title: Virtual thread based SMS Firewall
+  version: @project.version@
+  phone-number:
+    country-code: +98
+  smsc-api:
+    url: http://localhost:8083
+
+server:
+  port: 8082

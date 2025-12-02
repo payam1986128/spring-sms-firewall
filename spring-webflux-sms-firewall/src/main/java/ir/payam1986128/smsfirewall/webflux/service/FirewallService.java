@@ -8,15 +8,12 @@ import reactor.core.publisher.Mono;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class FirewallService {
-    private final Map<Action, ActionService> actions;
     private final SmsRepository smsRepository;
-    private final SendActionService sendActionService;
     private final RateLimiterService rateLimiterService;
     private final LimiterConditionService limiterConditionService;
 
@@ -24,16 +21,20 @@ public class FirewallService {
         return limiterConditionService.getActiveLimiterConditions()
                 .filterWhen(condition -> evaluate(condition, sms))
                 .collectList()
-                .flatMap(conditions -> act(conditions, sms))
+                .flatMap(conditions -> act(conditions.isEmpty() ? null : conditions.get(0), sms))
                 .flatMap(smsRepository::save);
     }
 
-    public Mono<Sms> act(List<LimiterCondition> conditions, Sms sms) {
-        if (conditions.isEmpty()) {
-            return sendActionService.send(sms);
-        }
-        LimiterCondition condition = conditions.get(0);
-        return actions.get(condition.getAction()).act(condition, sms);
+    public Mono<Sms> act(LimiterCondition condition, Sms sms) {
+        return Mono.fromCallable(() -> {
+            sms.setEvaluatedTime(LocalDateTime.now());
+            sms.setAction(Action.SEND);
+            if (condition != null) {
+                sms.setAction(condition.getAction());
+                sms.setAppliedFilterId(condition.getId());
+            }
+            return sms;
+        });
     }
 
     private Mono<Boolean> evaluate(LimiterCondition condition, Sms sms) {

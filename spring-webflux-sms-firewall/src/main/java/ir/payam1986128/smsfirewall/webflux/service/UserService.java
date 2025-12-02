@@ -6,7 +6,7 @@ import ir.payam1986128.smsfirewall.core.presentation.users.LoginUserRequest;
 import ir.payam1986128.smsfirewall.core.presentation.users.RegisterUserRequest;
 import ir.payam1986128.smsfirewall.core.presentation.users.VerificationResponse;
 import ir.payam1986128.smsfirewall.webflux.repository.UserRepository;
-import ir.payam1986128.smsfirewall.webflux.security.JwtTokenProvider;
+import ir.payam1986128.smsfirewall.core.security.JwtTokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.ReactiveAuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

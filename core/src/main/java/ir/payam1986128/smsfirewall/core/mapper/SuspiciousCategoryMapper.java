@@ -1,4 +1,4 @@
-package ir.payam1986128.smsfirewall.webflux.mapper;
+package ir.payam1986128.smsfirewall.core.mapper;
 
 import ir.payam1986128.smsfirewall.core.entity.SuspiciousCategory;
 import ir.payam1986128.smsfirewall.core.presentation.suspiciouscategories.SuspiciousCategoryDto;

@@ -1,4 +1,4 @@
-package ir.payam1986128.smsfirewall.webflux.security;
+package ir.payam1986128.smsfirewall.core.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,13 +30,17 @@ import static java.util.stream.Collectors.joining;
 public class JwtTokenProvider {
     private static final String AUTHORITIES_KEY = "roles";
 
-    private final JwtProperties jwtProperties;
+    @Value("${jwt.secretKey}")
+    private String jwtSecretKey;
+
+    @Value("${jwt.validityInMs}")
+    private long validityInMs;
 
     private SecretKey secretKey;
 
     @PostConstruct
     public void init() {
-        var secret = Base64.getEncoder().encodeToString(this.jwtProperties.getSecretKey().getBytes());
+        var secret = Base64.getEncoder().encodeToString(jwtSecretKey.getBytes());
         this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
@@ -52,7 +57,7 @@ public class JwtTokenProvider {
         var claims = claimsBuilder.build();
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + this.jwtProperties.getValidityInMs());
+        Date validity = new Date(now.getTime() + validityInMs);
 
         return Jwts.builder().claims(claims).issuedAt(now).expiration(validity)
                 .signWith(this.secretKey, Jwts.SIG.HS256).compact();

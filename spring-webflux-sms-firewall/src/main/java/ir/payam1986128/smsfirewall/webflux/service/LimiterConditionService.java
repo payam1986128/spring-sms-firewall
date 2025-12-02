@@ -9,9 +9,9 @@ import ir.payam1986128.smsfirewall.core.presentation.common.SuccessfulCreationDt
 import ir.payam1986128.smsfirewall.core.presentation.limiterconditions.*;
 import ir.payam1986128.smsfirewall.core.presentation.sms.SmsFilterRequest;
 import ir.payam1986128.smsfirewall.core.presentation.sms.SmsResponse;
-import ir.payam1986128.smsfirewall.webflux.mapper.CommonMapper;
-import ir.payam1986128.smsfirewall.webflux.mapper.LimiterConditionMapper;
-import ir.payam1986128.smsfirewall.webflux.mapper.SmsMapper;
+import ir.payam1986128.smsfirewall.core.mapper.CommonMapper;
+import ir.payam1986128.smsfirewall.core.mapper.LimiterConditionMapper;
+import ir.payam1986128.smsfirewall.core.mapper.SmsMapper;
 import ir.payam1986128.smsfirewall.webflux.repository.LimiterConditionRepository;
 import ir.payam1986128.smsfirewall.webflux.repository.SmsRepository;
 import ir.payam1986128.smsfirewall.webflux.repository.SuspiciousCategoryRepository;

@@ -3,20 +3,16 @@ package ir.payam1986128.smsfirewall.webflux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Feign;
 import feign.form.spring.SpringFormEncoder;
-import ir.payam1986128.smsfirewall.core.entity.Action;
+import ir.payam1986128.smsfirewall.core.security.JwtTokenProvider;
 import ir.payam1986128.smsfirewall.core.smscclient.SmscApi;
 import ir.payam1986128.smsfirewall.core.smscclient.SmscApiErrorDecoder;
+import ir.payam1986128.smsfirewall.webflux.filter.JwtTokenAuthenticationFilter;
 import ir.payam1986128.smsfirewall.webflux.repository.UserRepository;
-import ir.payam1986128.smsfirewall.webflux.security.JwtProperties;
-import ir.payam1986128.smsfirewall.webflux.security.JwtTokenAuthenticationFilter;
-import ir.payam1986128.smsfirewall.webflux.security.JwtTokenProvider;
-import ir.payam1986128.smsfirewall.webflux.service.ActionService;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
 import org.springframework.cloud.openfeign.support.SpringDecoder;
 import org.springframework.cloud.openfeign.support.SpringEncoder;
@@ -42,14 +38,11 @@ import org.springframework.web.cors.reactive.CorsWebFilter;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @SpringBootApplication
 @EnableReactiveCouchbaseRepositories("ir.payam1986128.smsfirewall.core.repository")
 @EnableWebFluxSecurity
 @EnableTransactionManagement
-@EnableConfigurationProperties(JwtProperties.class)
 public class WebFluxApplication {
 
     @Value("${app.smsc-api.url}")
@@ -57,11 +50,6 @@ public class WebFluxApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(WebFluxApplication.class, args);
-    }
-
-    @Bean
-    public Map<Action, ActionService> actions(List<ActionService> actionServices) {
-        return actionServices.stream().collect(Collectors.toMap(ActionService::getAction, a -> a));
     }
 
     @Bean
