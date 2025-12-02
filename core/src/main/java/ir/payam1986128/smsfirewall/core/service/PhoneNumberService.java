@@ -1,4 +1,4 @@
-package ir.payam1986128.smsfirewall.webflux.service;
+package ir.payam1986128.smsfirewall.core.service;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
