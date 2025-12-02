@@ -21,7 +21,7 @@ public class SmsFirewallRestController {
     public SuccessfulCreationDto receive(@RequestBody Sms sms) {
         sms = transceiverService.receive(sms);
         sms = firewallService.protect(sms);
-        sms = transceiverService.receive(sms);
+        sms = transceiverService.send(sms);
         return new SuccessfulCreationDto(sms.getId().toString());
     }
 }
