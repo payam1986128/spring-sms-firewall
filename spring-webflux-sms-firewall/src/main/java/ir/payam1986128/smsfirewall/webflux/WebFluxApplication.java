@@ -3,11 +3,11 @@ package ir.payam1986128.smsfirewall.webflux;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Feign;
 import feign.form.spring.SpringFormEncoder;
-import ir.payam1986128.smsfirewall.core.security.JwtTokenProvider;
 import ir.payam1986128.smsfirewall.core.smscclient.SmscApi;
 import ir.payam1986128.smsfirewall.core.smscclient.SmscApiErrorDecoder;
-import ir.payam1986128.smsfirewall.webflux.filter.JwtTokenAuthenticationFilter;
 import ir.payam1986128.smsfirewall.webflux.repository.UserRepository;
+import ir.payam1986128.smsfirewall.webflux.security.JwtTokenAuthenticationFilter;
+import ir.payam1986128.smsfirewall.webflux.security.JwtTokenProvider;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -39,8 +39,8 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-@SpringBootApplication
-@EnableReactiveCouchbaseRepositories("ir.payam1986128.smsfirewall.core.repository")
+@SpringBootApplication(scanBasePackages = {"ir.payam1986128.smsfirewall.core", "ir.payam1986128.smsfirewall.webflux"})
+@EnableReactiveCouchbaseRepositories("ir.payam1986128.smsfirewall.webflux.repository")
 @EnableWebFluxSecurity
 @EnableTransactionManagement
 public class WebFluxApplication {
