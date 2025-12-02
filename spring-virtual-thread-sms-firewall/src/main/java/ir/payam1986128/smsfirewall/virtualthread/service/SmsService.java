@@ -1,0 +1,48 @@
+package ir.payam1986128.smsfirewall.virtualthread.service;
+
+import ir.payam1986128.smsfirewall.core.entity.Sms;
+import ir.payam1986128.smsfirewall.core.mapper.CommonMapper;
+import ir.payam1986128.smsfirewall.core.mapper.SmsMapper;
+import ir.payam1986128.smsfirewall.core.presentation.sms.SmsFilterRequest;
+import ir.payam1986128.smsfirewall.core.presentation.sms.SmsResponse;
+import ir.payam1986128.smsfirewall.virtualthread.repository.SmsRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.data.couchbase.core.ExecutableFindByQueryOperation;
+import org.springframework.data.couchbase.core.query.Query;
+import org.springframework.data.couchbase.core.query.QueryCriteria;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+
+import static org.springframework.data.couchbase.core.query.N1QLExpression.x;
+
+@AllArgsConstructor
+@Service
+public class SmsService {
+    private final SmsRepository repository;
+    private final CommonMapper commonMapper;
+    private final SmsMapper smsMapper;
+
+    public SmsResponse getSms(SmsFilterRequest request) {
+        Query query = Query.query(QueryCriteria.where(x("receivedTime")).lte(request.getDateTo()));
+        if (request.getDateFrom() != null) {
+            query.addCriteria(QueryCriteria.where(x("receivedTime")).gte(request.getDateFrom()));
+        }
+        if (request.getAction() != null) {
+            query.addCriteria(QueryCriteria.where(x("action")).eq(request.getAction()));
+        }
+        if (request.getSender() != null) {
+            query.addCriteria(QueryCriteria.where(x("sender")).eq(request.getSender()));
+        }
+        if (request.getReceiver() != null) {
+            query.addCriteria(QueryCriteria.where(x("receiver")).eq(request.getReceiver()));
+        }
+        PageRequest pageable = PageRequest.of(request.getPage() - 1, request.getPageSize());
+        query.with(pageable);
+        if (request.getSort() != null) {
+            query.with(Sort.by(commonMapper.to(request.getSort())));
+        }
+        ExecutableFindByQueryOperation.TerminatingFindByQuery<Sms> findByQuery = repository.getOperations().findByQuery(Sms.class).matching(query);
+        return new SmsResponse(smsMapper.to(findByQuery.all()), findByQuery.count(), request.getDateTo());
+    }
+}

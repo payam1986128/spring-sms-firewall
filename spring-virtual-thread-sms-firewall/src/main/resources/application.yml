@@ -18,9 +18,13 @@ logging:
   level:
     org.springframework.data.couchbase.repository.query: ERROR
 
-jwt:
-  secretKey: 3016c6eb-da39-47b2-8aa4-863e6d48c203
-  validityInMs: 3600000
+security:
+  jwt:
+    secret-key: 3016c6eb-da39-47b2-8aa4-863e6d48c204
+    access-token-expiration: 3600000
+    refresh-token-expiration: 86400000
+    skipped-endpoints:
+      - /api/bo/users/login
 
 app:
   title: Virtual thread based SMS Firewall
