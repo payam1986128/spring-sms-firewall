@@ -34,14 +34,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication(scanBasePackages = {"ir.payam1986128.smsfirewall.core", "ir.payam1986128.smsfirewall.virtualthread"})
 @EnableCouchbaseRepositories("ir.payam1986128.smsfirewall.virtualthread.repository")
 @EntityScan(basePackages = "ir.payam1986128.smsfirewall.core.entity")
 @EnableWebSecurity
 @EnableMethodSecurity
-@EnableTransactionManagement
 @RequiredArgsConstructor
 public class VirtualThreadApplication {
     private final JwtTokenAuthenticationFilter jwtTokenAuthenticationFilter;

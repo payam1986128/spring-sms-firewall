@@ -13,6 +13,9 @@ spring:
     cache-names: activeLimiterConditions
     caffeine:
       spec: maximumSize=1000,expireAfterWrite=60m
+  threads:
+    virtual:
+      enabled: true
 
 logging:
   level:
@@ -20,7 +23,7 @@ logging:
 
 security:
   jwt:
-    secret-key: 3016c6eb-da39-47b2-8aa4-863e6d48c204
+    secret-key: cEBZQG0xOTg2bDI4X3NNc0ZJcmVXQWxMX3ZpUnR1QWxUSHJlYUQ=
     access-token-expiration: 3600000
     refresh-token-expiration: 86400000
     skipped-endpoints:
